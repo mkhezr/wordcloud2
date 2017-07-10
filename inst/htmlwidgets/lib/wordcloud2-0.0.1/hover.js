@@ -33,6 +33,11 @@ function cv_handleHover(item, dimension, evt) {
 
 }
 
+//click function
+function cv_handleClick(item, dimension, evt) {
+  alert("Hello Click!");
+}
+
 //mask function
 function maskInit(el,x){
   console.log(1)
@@ -133,6 +138,7 @@ function maskInit(el,x){
                   ellipticity: x.ellipticity,
                   clearCanvas: false,
                   hover: x.hover || cv_handleHover,
+                  click: x.click || cv_handleClick,
                   abortThreshold: 3000
                   });
 }
