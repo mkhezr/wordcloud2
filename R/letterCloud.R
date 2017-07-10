@@ -16,6 +16,11 @@
 ##' library(wordcloud2)
 ##'
 ##' letterCloud(demoFreq,"R")
+
+
+
+#' @importFrom grDevices dev.off png
+#' @importFrom graphics par plot.new strwidth text
 #' @export
 
 

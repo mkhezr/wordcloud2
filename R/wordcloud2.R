@@ -9,7 +9,7 @@
 ##'     color = 'random-dark', backgroundColor = "white",
 ##'     minRotation = -pi/4, maxRotation = pi/4, shuffle = TRUE,
 ##'     rotateRatio = 0.4, shape = 'circle', ellipticity = 0.65,
-##'     widgetsize = NULL, figPath = NULL, hoverFunction = NULL)
+##'     widgetsize = NULL, figPath = NULL, hoverFunction = NULL, clickFunction = NULL)
 ##'
 ##' @param data   A data frame including word and freq in each column
 ##' @param size   Font size, default is 1. The larger size means the bigger word.
@@ -35,6 +35,7 @@
 ##' @param widgetsize size of the widgets
 ##' @param hoverFunction Callback to call when the cursor enters or leaves a region occupied
 ##' by a word. A string of java script function.
+##' @param clickFunction Callback to call when the user clicks on a word.
 ##'
 ##' @examples
 ##'library(wordcloud2)
@@ -92,8 +93,9 @@ wordcloud2 <- function(data,
                        ellipticity = 0.65,
                        widgetsize = NULL,
                        figPath = NULL,
-                       hoverFunction = NULL
-                       ) {
+                       hoverFunction = NULL,
+                       clickFunction = NULL
+) {
   if(class(data) =="table"){
     dataOut = data.frame(name = names(data),
                          freq = as.vector(data))
@@ -107,7 +109,7 @@ wordcloud2 <- function(data,
 
   if(!is.null(figPath)){
     if(!file.exists(figPath)){
-    stop("cannot find fig in the figPath")
+      stop("cannot find fig in the figPath")
     }
     spPath = strsplit(figPath, "\\.")[[1]]
     len = length(spPath)
@@ -145,29 +147,30 @@ wordcloud2 <- function(data,
     shape = shape,
     ellipticity = ellipticity,
     figBase64 = base64,
-    hover = htmlwidgets::JS(hoverFunction)
+    hover = htmlwidgets::JS(hoverFunction),
+    click = htmlwidgets::JS(clickFunction)
   )
 
 
   chart = htmlwidgets::createWidget("wordcloud2", settings,
-                            width = widgetsize[1],
-                            height = widgetsize[2],
-                            sizingPolicy = htmlwidgets::sizingPolicy(
-                              viewer.padding = 0,
-                              # viewer.suppress = T,
-                              browser.padding = 0,
-                              browser.fill = TRUE
-                            ))
+                                    width = widgetsize[1],
+                                    height = widgetsize[2],
+                                    sizingPolicy = htmlwidgets::sizingPolicy(
+                                      viewer.padding = 0,
+                                      # viewer.suppress = T,
+                                      browser.padding = 0,
+                                      browser.fill = TRUE
+                                    ))
 
 
   htmlwidgets::onRender(chart,"function(el,x){
                         console.log(123);
                         if(!iii){
-                          window.location.reload();
-                          iii = False;
+                        window.location.reload();
+                        iii = False;
 
                         }
-  }")
+}")
 }
 
 
